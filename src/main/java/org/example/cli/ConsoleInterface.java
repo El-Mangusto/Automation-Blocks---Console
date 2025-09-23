@@ -1,9 +1,11 @@
 package org.example.cli;
 
 import org.example.variables.ExecutionContext;
+import org.example.variables.Variable;
 import org.example.variables.VariableType;
 import org.example.workflow.ActionBlock;
 import org.example.workflow.BlockRegistry;
+import org.example.workflow.ParamKind;
 import org.example.workflow.Workflow;
 
 import java.util.*;
@@ -105,9 +107,26 @@ public class ConsoleInterface {
         Map<String, String> params = new HashMap<>();
         System.out.println("\tConfig block:");
         for (String key : block.getConfigKeys()) {
-            System.out.print(key + ": ");
-            String value = scanner.nextLine();
-            params.put(key, value);
+            ParamKind kind = block.getParamKind(key);
+
+            String input;
+            while (true) {
+                if (kind == ParamKind.VARIABLE) {
+                    System.out.print(key + " (enter variable name): ");
+                } else {
+                    System.out.print(key + " (enter value): ");
+                }
+
+                input = scanner.nextLine().trim();
+
+                if (kind == ParamKind.VARIABLE && !ExecutionContext.containsVariable(input)) {
+                    System.out.println("Variable '" + input + "' does not exist! Please try again.");
+                    continue;
+                }
+                break;
+            }
+
+            params.put(key, input);
         }
         block.configure(params);
 

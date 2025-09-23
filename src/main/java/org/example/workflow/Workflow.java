@@ -24,24 +24,13 @@ public class Workflow {
         }
     }
 
+
     public void run() {
-        run(null);
-    }
-
-    public void run(String inputVarName) {
-        Variable currentVar = null;
-
-        if (inputVarName != null && ExecutionContext.exists(inputVarName)) {
-            currentVar = ExecutionContext.getVariable(inputVarName);
+        if (blocks.isEmpty()) {
+            System.out.println("No blocks added yet");
         }
-
         for (ActionBlock block : blocks) {
-            block.execute(currentVar);
-
-            if (currentVar == null) {
-                ExecutionContext.setVariable("_tempVar", VariableType.STRING, "");
-                currentVar = ExecutionContext.getVariable("_tempVar");
-            }
+            block.execute();
         }
     }
 

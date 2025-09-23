@@ -12,7 +12,7 @@ public abstract class ActionBlock {
         this.name = name;
     }
 
-    public abstract void execute(Variable var);
+    public abstract void execute();
 
     public abstract void configure(Map<String, String> params);
 
@@ -23,4 +23,6 @@ public abstract class ActionBlock {
     public String getName() {
         return name;
     }
+
+    public abstract ParamKind getParamKind(String key);
 }

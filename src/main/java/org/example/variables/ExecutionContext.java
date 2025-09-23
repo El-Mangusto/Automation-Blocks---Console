@@ -40,6 +40,10 @@ public class ExecutionContext {
         variables.clear();
     }
 
+    public static boolean containsVariable(String variableName) {
+        return variables.containsKey(variableName);
+    }
+
     public static void showVariables() {
         if (variables.isEmpty()) {
             System.out.println("No variables");
