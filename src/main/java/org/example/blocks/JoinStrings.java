@@ -9,13 +9,13 @@ import org.example.workflow.ParamKind;
 import java.util.List;
 import java.util.Map;
 
-public class SplitString extends ActionBlock {
+public class JoinStrings extends ActionBlock {
     private String delimiter;
     private String inputVarName;
     private String outputVarName;
 
-    public SplitString() {
-        super("SplitString");
+    public  JoinStrings() {
+        super("JoinStrings");
     }
 
     @Override
@@ -26,14 +26,14 @@ public class SplitString extends ActionBlock {
 
         Variable inputVar = ExecutionContext.getVariable(inputVarName);
 
-        if (inputVar.getType() != VariableType.STRING) {
-            throw new IllegalArgumentException("Input variable must be of type STRING");
+        if (inputVar.getType() != VariableType.LIST_STRING) {
+            throw new IllegalArgumentException("Input variable must be of type LIST_STRING");
         }
+        List<String> inputList = (List<String>) inputVar.getValue();
 
-        String str = (String) inputVar.getValue();
-        List<String> result = List.of(str.split(delimiter));
+        String result = String.join(delimiter, inputList);
 
-        ExecutionContext.setVariable(outputVarName, VariableType.LIST_STRING, result);
+        ExecutionContext.setVariable(outputVarName, VariableType.STRING, result);
 
         log();
     }
@@ -53,7 +53,7 @@ public class SplitString extends ActionBlock {
 
     @Override
     public void log() {
-        System.out.println(getName() + " block: split by '" + delimiter + "', result in " + outputVarName);
+        System.out.println(getName() + " block: joined " + inputVarName + " using delimiter '" + delimiter );
     }
 
     @Override

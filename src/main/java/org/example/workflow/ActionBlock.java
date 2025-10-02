@@ -1,12 +1,12 @@
 package org.example.workflow;
 
-import org.example.variables.Variable;
-
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public abstract class ActionBlock {
     private final String name;
+    protected Map<String, String> configData = new HashMap<>();
 
     public ActionBlock(String name) {
         this.name = name;
@@ -20,9 +20,13 @@ public abstract class ActionBlock {
 
     public abstract void log();
 
+    public abstract ParamKind getParamKind(String key);
+
     public String getName() {
         return name;
     }
 
-    public abstract ParamKind getParamKind(String key);
+    public Map<String, String> getConfigData() {
+        return new HashMap<>(configData);
+    }
 }

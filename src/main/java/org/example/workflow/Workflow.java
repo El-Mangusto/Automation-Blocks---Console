@@ -45,4 +45,12 @@ public class Workflow {
         }
         System.out.println("Finish");
     }
+
+    public List<ActionBlock> getBlocks() {
+        return new ArrayList<>(blocks);
+    }
+
+    public void clear() {
+        blocks.clear();
+    }
 }
