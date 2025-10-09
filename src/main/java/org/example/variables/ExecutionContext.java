@@ -28,6 +28,10 @@ public class ExecutionContext {
         return var;
     }
 
+    public static Map<String, Variable> getAllVariables() {
+        return variables;
+    }
+
     public static Object getValue(String name) {
         return getVariable(name).getValue();
     }

@@ -3,20 +3,20 @@ package org.example.cli;
 import org.example.variables.ExecutionContext;
 import org.example.variables.Variable;
 import org.example.variables.VariableType;
-import org.example.workflow.ActionBlock;
-import org.example.workflow.BlockRegistry;
-import org.example.workflow.ParamKind;
-import org.example.workflow.Workflow;
+import org.example.workflow.*;
 
+import java.io.IOException;
 import java.util.*;
 
 public class ConsoleInterface {
     private final Workflow workflow;
     private final BlockRegistry blockRegistry;
+    private final WorkflowSerializer serializer;
 
     public ConsoleInterface(Scanner scanner, Workflow workflow) {
         this.workflow = workflow;
         blockRegistry = new BlockRegistry("org.example.blocks");
+        this.serializer = new WorkflowSerializer(blockRegistry);
         mainMenu(scanner);
     }
 
@@ -30,7 +30,9 @@ public class ConsoleInterface {
             System.out.println("2.Remove last block");
             System.out.println("3.Create a variable");
             System.out.println("4.Run");
-            System.out.println("5.Exit");
+            System.out.println("5.Save workflow");
+            System.out.println("6.Load workflow");
+            System.out.println("7.Exit");
 
             System.out.print("Enter your choice: ");
             String line = scanner.nextLine();
@@ -71,6 +73,28 @@ public class ConsoleInterface {
                     System.out.println("\n\n");
                 }
                 case 5 -> {
+                    System.out.print("Enter filename (without .json): ");
+                    String filename = scanner.nextLine().trim();
+                    try {
+                        serializer.save(workflow, filename + ".json");
+                        System.out.println("✓ Workflow saved to " + filename + ".json\n");
+                    } catch (IOException e) {
+                        System.out.println("✗ Error saving: " + e.getMessage() + "\n");
+                    }
+                }
+                case 6 -> {
+                    System.out.print("Enter filename (without .json): ");
+                    String filename = scanner.nextLine().trim();
+                    try {
+                        workflow.clear();  // Очищаем старые блоки
+                        serializer.load(workflow, filename + ".json");
+                        System.out.println("✓ Workflow loaded from " + filename + ".json\n");
+                    } catch (IOException e) {
+                        System.out.println("✗ Error loading: " + e.getMessage() + "\n");
+                    }
+                }
+                case 7 -> {
+                    System.out.println("Goodbye!");
                     return;
                 }
                 default -> System.out.println("Invalid choice");

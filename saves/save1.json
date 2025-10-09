@@ -1,0 +1,38 @@
+{
+  "variables": [
+    {
+      "name": "Text\\",
+      "type": "STRING",
+      "value": "Hello:Gays"
+    },
+    {
+      "name": "TextResult",
+      "type": "STRING",
+      "value": "0"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "SplitString",
+      "config": {
+        "delimiter": ":",
+        "outputVarName": "TextResult",
+        "inputVarName": "Text\\"
+      }
+    },
+    {
+      "name": "Write File",
+      "config": {
+        "pathFile": "results//file.txt",
+        "inputVarName": "TextResult"
+      }
+    },
+    {
+      "name": "Write File",
+      "config": {
+        "pathFile": "results//file2.txt",
+        "inputVarName": "Text\\"
+      }
+    }
+  ]
+}
